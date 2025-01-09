@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- HTML HEAD SECTION -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS SECTION -->
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #000;
+            --secondary-cheolor: #4a4a4a;
+            --accent-color: #0066cc;
+            --background-color: #f2f2f7;
+            --card-background: #fff;
+            --text-color: #1d1d1f;
+            --divider-color: #86868b;
+        }
+
+        /* Base Styles */
+        body {
+            display: flex;
+            margin: 0;
+            padding: 40px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+        }
+
+        /* Input Section Styles */
+        .input-section {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-right: 40px;
+        }
+
+        /* Resume Preview Styles */
+        .resume-preview {
+            flex: 1;
+            padding: 40px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: relative;
+            width: 8.5in;
+            min-height: 11in;
+            margin: 0.5in;
+        }
+
+        /* Form Element Styles */
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f5f5f7;
+            white-space: pre-wrap;
+        }
+
+        textarea#summary, textarea#responsibilities, textarea#skills {
+            resize: none;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(41, 151, 255, 0.1);
+        }
+
+        /* Resume Section Styles */
+        .resume-section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .resume-section p {
+            white-space: pre-wrap;
+        }
+
+        /* Bullet Point Styles */
+        .bullet-list {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .bullet-list li {
+            margin-bottom: 5px;
+        }
+
+        /* Heading Styles */
+        h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            page-break-after: avoid;
+            margin: 0 0 20px 0;
+        }
+
+        h3.with-border {
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        /* Preview Element Styles */
+        #previewName {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        #previewContact {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        /* Button Styles */
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            background-color: #1d1d1f;
+        }
+
+        /* Work Experience Entry Styles */
+        .work-entry {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            page-break-inside: avoid;
+            white-space: pre-wrap;
+        }
+
+        .work-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .preview-current-work {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed #e5e5e5;
+            page-break-inside: avoid;
+            white-space: pre-wrap;
+            display: none;
+        }
+
+        .preview-current-work:not(:empty) {
+            display: block;
+        }
+
+        /* Download Button Styles */
+        .download-btn {
+            background-color: var(--accent-color);
+            display: inline-block;
+            margin: 20px 10px 0;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background-color: #007aff;
+        }
+
+        /* Empty Section Styles */
+        .empty-section {
+            padding: 20px;
+            background-color: #f5f5f7;
+            border-radius: 12px;
+            border: 2px dashed #e5e5e5;
+            color: #86868b;
+            text-align: center;
+            font-style: italic;
+            display: none;
+        }
+
+        .empty-section.visible {
+            display: block;
+        }
+
+        /* Page Number Styles */
+        .page-numbers {
+            display: none;
+        }
+
+        .show-page-numbers .page-numbers {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #86868b;
+        }
+
+        /* Button Group Styles */
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Title Row Styles */
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .title-row .dates {
+            text-align: right;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            .input-section {
+                display: none;
+            }
+            .resume-preview {
+                box-shadow: none;
+                margin: 0;
+                padding: 40px;
+            }
+            .download-btn {
+                display: none;
+            }
+            .empty-section {
+                display: none;
+            }
+            @page {
+                size: letter;
+                margin: 0.5in;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                background: none;
+            }
+            .page-numbers {
+                display: none;
+            }
+            .show-page-numbers .page-numbers {
+                display: block;
+            }
+        }
+
+        /* Responsive Media Styles */
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .input-section {
+                margin-right: 0;
+                margin-bottom: 40px;
+            }
+        }
+
+        /* Toggle Styles */
+        .page-numbers-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .page-numbers-toggle input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        /* Advanced Fields Styles */
+        .advanced-fields {
+            display: none;
+        }
+
+        .advanced-fields.show {
+            display: block;
+        }
+
+        /* Bullet Point Input Styles */
+        .bullet-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .bullet-input button {
+            padding: 8px;
+            min-width: 30px;
+        }
+
+        /* Hide elements based on toggle */
+        .bullet-mode {
+            display: none;
+        }
+
+        .bullet-mode.show {
+            display: block;
+        }
+
+        .text-mode {
+            display: none;
+        }
+
+        .text-mode.show {
+            display: block;
+        }
+
+        /* About Section Styles */
+        .about-section {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<!-- HTML BODY SECTION -->
+<body>
+    <!-- Input Form Section -->
+    <div class="input-section">
+        <h2>Resume Information</h2>
+        
+        <div class="page-numbers-toggle">
+            <input type="checkbox" id="showPageNumbers" onchange="togglePageNumbers()">
+            <label for="showPageNumbers" style="text-transform: none; display: inline;">Show Page Numbers</label>
+            <input type="checkbox" id="showAdvanced" onchange="toggleAdvanced()">
+            <label for="showAdvanced" style="text-transform: none; display: inline;">Show Advanced</label>
+            <input type="checkbox" id="toggleBullets" onchange="toggleBulletMode()">
+            <label for="toggleBullets" style="text-transform: none; display: inline;">Use Bullet Points</label>
+        </div>
+
+        <div class="input-group">
+            <label>Personal Information</label>
+            <input type="text" id="fullName" placeholder="Full Name" oninput="updateResume()">
+            <input type="email" id="email" placeholder="Email" oninput="updateResume()">
+            <input type="tel" id="phone" placeholder="Phone Number" oninput="updateResume()">
+            <input type="text" id="location" placeholder="LinkedIn Link" oninput="updateResume()">
+        </div>
+
+        <div class="input-group">
+            <label>Summary of Achievements</label>
+            <textarea id="summary" class="text-mode show" rows="4" placeholder="Brief professional summary" oninput="updateResume()"></textarea>
+            <div class="bullet-mode">
+                <div class="bullet-input">
+                    <input type="text" id="summaryBullet" placeholder="Add bullet point">
+                    <button onclick="addBulletPoint('summary')">+</button>
+                </div>
+                <ul id="summaryBullets" class="bullet-list"></ul>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Skills</label>
+            <textarea id="skills" rows="4" placeholder="List your key skills" oninput="updateResume()"></textarea>
+            <div class="advanced-fields">
+                <input type="text" id="certifications" placeholder="Certifications" oninput="updateResume()">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Education</label>
+            <input type="text" id="education" placeholder="Degree, Institution" oninput="updateResume()">
+            <input type="text" id="gradYear" placeholder="Graduation Year" oninput="updateResume()">
+            <div class="advanced-fields">
+                <input type="text" id="courses" placeholder="Relevant Courses" oninput="updateResume()">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Work Experience</label>
+            <input type="text" id="jobTitle" placeholder="Job Title" oninput="updateCurrentWork()">
+            <input type="text" id="company" placeholder="Company" oninput="updateCurrentWork()">
+            <input type="text" id="workDates" placeholder="Dates of Employment" oninput="updateCurrentWork()">
+            <textarea id="responsibilities" class="text-mode show" rows="4" placeholder="Key responsibilities and achievements" oninput="updateCurrentWork()"></textarea>
+            <div class="bullet-mode">
+                <div class="bullet-input">
+                    <input type="text" id="responsibilityBullet" placeholder="Add bullet point">
+                    <button onclick="addBulletPoint('responsibilities')">+</button>
+                </div>
+                <ul id="responsibilityBullets" class="bullet-list"></ul>
+            </div>
+            <div class="button-group">
+                <button onclick="addWorkExperience()">Add Work Experience to Top</button>
+                <button onclick="addWorkExperienceToBottom()">Add Work Experience to Bottom</button>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <p>© 2025 Matthew Chau</p>
+        </div>
+    </div>
+
+    <!-- Resume Preview Section -->
+    <div class="resume-preview">
+        <div class="resume-section">
+            <div id="personalEmpty" class="empty-section visible">Enter your personal information</div>
+            <h3 id="previewName"></h3>
+            <p id="previewContact"></p>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="with-border">SUMMARY OF ACHIEVEMENTS</h3>
+            <div id="summaryEmpty" class="empty-section visible">Add your professional summary</div>
+            <p id="previewSummary"></p>
+            <ul id="previewSummaryBullets" class="bullet-list"></ul>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="with-border">SKILLS</h3>
+            <div id="skillsEmpty" class="empty-section visible">List your key skills</div>
+            <p id="previewSkills"></p>
+            <p id="previewCertifications"></p>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="with-border">EDUCATION</h3>
+            <div id="educationEmpty" class="empty-section visible">Enter your education details</div>
+            <p id="previewEducation"></p>
+            <p id="previewCourses"></p>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="with-border">WORK EXPERIENCE</h3>
+            <div id="previewCurrentWork" class="preview-current-work"></div>
+            <div id="previewWork"></div>
+        </div>
+
+        <div class="page-numbers">Page 1</div>
+
+        <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
+        <button class="download-btn" onclick="downloadDOCX()">Download DOCX</button>
+    </div>
+
+    <!-- JAVASCRIPT SECTION -->
+    <script>
+        let workExperiences = [];
+        let editingIndex = -1;
+        let summaryBullets = [];
+        let responsibilityBullets = [];
+
+        function togglePageNumbers() {
+            const showPageNumbers = document.getElementById('showPageNumbers').checked;
+            document.querySelector('.resume-preview').classList.toggle('show-page-numbers', showPageNumbers);
+        }
+
+        function toggleAdvanced() {
+            const showAdvanced = document.getElementById('showAdvanced').checked;
+            document.querySelectorAll('.advanced-fields').forEach(field => {
+                field.classList.toggle('show', showAdvanced);
+            });
+        }
+
+        function toggleBulletMode() {
+            const useBullets = document.getElementById('toggleBullets').checked;
+            document.querySelectorAll('.bullet-mode').forEach(element => {
+                element.classList.toggle('show', useBullets);
+            });
+            document.querySelectorAll('.text-mode').forEach(element => {
+                element.classList.toggle('show', !useBullets);
+            });
+        }
+
+        function addBulletPoint(type) {
+            const bulletInput = document.getElementById(`${type}Bullet`);
+            const bulletText = bulletInput.value.trim();
+            
+            if (bulletText) {
+                if (type === 'summary') {
+                    summaryBullets.push(bulletText);
+                    updateSummaryBullets();
+                } else if (type === 'responsibilities') {
+                    responsibilityBullets.push(bulletText);
+                    updateResponsibilityBullets();
+                }
+                bulletInput.value = '';
+            }
+        }
+
+        function updateSummaryBullets() {
+            const bulletsList = document.getElementById('summaryBullets');
+            const previewBulletsList = document.getElementById('previewSummaryBullets');
+            
+            bulletsList.innerHTML = summaryBullets.map((bullet, index) => 
+                `<li>${bullet} <button onclick="removeBullet('summary', ${index})">×</button></li>`
+            ).join('');
+            
+            previewBulletsList.innerHTML = summaryBullets.map(bullet => 
+                `<li>${bullet}</li>`
+            ).join('');
+        }
+
+        function updateResponsibilityBullets() {
+            const bulletsList = document.getElementById('responsibilityBullets');
+            bulletsList.innerHTML = responsibilityBullets.map((bullet, index) => 
+                `<li>${bullet} <button onclick="removeBullet('responsibilities', ${index})">×</button></li>`
+            ).join('');
+            updateCurrentWork();
+        }
+
+        function removeBullet(type, index) {
+            if (type === 'summary') {
+                summaryBullets.splice(index, 1);
+                updateSummaryBullets();
+            } else if (type === 'responsibilities') {
+                responsibilityBullets.splice(index, 1);
+                updateResponsibilityBullets();
+            }
+        }
+
+        function updateCurrentWork() {
+            const jobTitle = document.getElementById('jobTitle').value;
+            const company = document.getElementById('company').value;
+            const workDates = document.getElementById('workDates').value;
+            const responsibilities = document.getElementById('responsibilities').value;
+
+            let previewHTML = '';
+            if (jobTitle || company || workDates || responsibilities || responsibilityBullets.length > 0) {
+                previewHTML = `<div class="title-row"><strong>${jobTitle}</strong>${workDates ? `<span class="dates">${workDates}</span>` : ''}</div>${company ? `<div><i>${company}</i></div>` : ''}${responsibilities ? `<div>${responsibilities}</div>` : ''}`;
+                
+                if (responsibilityBullets.length > 0) {
+                    previewHTML += `<ul class="bullet-list">${responsibilityBullets.map(bullet => 
+                        `<li>${bullet}</li>`
+                    ).join('')}</ul>`;
+                }
+            }
+            document.getElementById('previewCurrentWork').innerHTML = previewHTML;
+        }
+
+        function addWorkExperience() {
+            const experience = {
+                jobTitle: document.getElementById('jobTitle').value,
+                company: document.getElementById('company').value,
+                workDates: document.getElementById('workDates').value,
+                responsibilities: document.getElementById('responsibilities').value,
+                bullets: [...responsibilityBullets]
+            };
+            
+            if (experience.jobTitle && experience.company) {
+                workExperiences.unshift(experience);
+                updateResume();
+                
+                document.getElementById('jobTitle').value = '';
+                document.getElementById('company').value = '';
+                document.getElementById('workDates').value = '';
+                document.getElementById('responsibilities').value = '';
+                responsibilityBullets = [];
+                updateResponsibilityBullets();
+                document.getElementById('previewCurrentWork').innerHTML = '';
+            }
+        }
+
+        function addWorkExperienceToBottom() {
+            const experience = {
+                jobTitle: document.getElementById('jobTitle').value,
+                company: document.getElementById('company').value,
+                workDates: document.getElementById('workDates').value,
+                responsibilities: document.getElementById('responsibilities').value,
+                bullets: [...responsibilityBullets]
+            };
+            
+            if (experience.jobTitle && experience.company) {
+                workExperiences.push(experience);
+                updateResume();
+                
+                document.getElementById('jobTitle').value = '';
+                document.getElementById('company').value = '';
+                document.getElementById('workDates').value = '';
+                document.getElementById('responsibilities').value = '';
+                responsibilityBullets = [];
+                updateResponsibilityBullets();
+                document.getElementById('previewCurrentWork').innerHTML = '';
+            }
+        }
+
+        function updateResume() {
+            const name = document.getElementById('fullName').value;
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('personalEmpty').classList.toggle('visible', !name);
+            
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const location = document.getElementById('location').value;
+            let contactInfo = [];
+            if (email) contactInfo.push(email);
+            if (phone) contactInfo.push(phone);
+            if (location) contactInfo.push(location);
+            const contactText = contactInfo.join(' | ');
+            document.getElementById('previewContact').textContent = contactText;
+            
+            const summary = document.getElementById('summary').value;
+            document.getElementById('previewSummary').textContent = summary;
+            document.getElementById('summaryEmpty').classList.toggle('visible', !summary && summaryBullets.length === 0);
+            
+            const education = document.getElementById('education').value;
+            const gradYear = document.getElementById('gradYear').value;
+            const courses = document.getElementById('courses').value;
+            let educationText = '';
+            if (education || gradYear) {
+                educationText = `<div class="title-row"><span>${education}</span>${gradYear ? `<span class="dates">${gradYear}</span>` : ''}</div>`;
+            }
+            document.getElementById('previewEducation').innerHTML = educationText;
+            document.getElementById('previewCourses').textContent = courses ? `Relevant Courses: ${courses}` : '';
+            document.getElementById('educationEmpty').classList.toggle('visible', !education);
+            
+            const workHTML = workExperiences.map((exp) => {
+                let html = `<div class="work-entry"><div class="title-row"><strong>${exp.jobTitle}</strong>${exp.workDates ? `<span class="dates">${exp.workDates}</span>` : ''}</div>${exp.company ? `<div><i>${exp.company}</i></div>` : ''}${exp.responsibilities ? `<div>${exp.responsibilities}</div>` : ''}`;
+                
+                if (exp.bullets && exp.bullets.length > 0) {
+                    html += `<ul class="bullet-list">${exp.bullets.map(bullet => 
+                        `<li>${bullet}</li>`
+                    ).join('')}</ul>`;
+                }
+                
+                html += '</div>';
+                return html;
+            }).join('');
+            document.getElementById('previewWork').innerHTML = workHTML;
+            
+            const skills = document.getElementById('skills').value;
+            document.getElementById('previewSkills').textContent = skills;
+            document.getElementById('skillsEmpty').classList.toggle('visible', !skills);
+
+            const certifications = document.getElementById('certifications').value;
+            document.getElementById('previewCertifications').textContent = certifications ? `Certifications: ${certifications}` : '';
+        }
+
+        function downloadPDF() {
+            window.print();
+        }
+
+        function downloadDOCX() {
+            const previewContent = document.querySelector('.resume-preview').innerHTML;
+            const blob = new Blob([previewContent], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resume.docx';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
